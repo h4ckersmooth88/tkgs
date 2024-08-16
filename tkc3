@@ -1,0 +1,27 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1     #TKGS API endpoint
+kind: TanzuKubernetesCluster                  #required parameter
+metadata:
+  name: k8s-cluster-01                        #Kubernetes cluster name
+  namespace: cluster-01                       #vSphere namespace (created in earlier)
+spec:
+  distribution:
+    version: v1.21.6---vmware.1-tkg.1.b3d708a  #Kubernetes version (TKR)
+  topology:
+    controlPlane:
+      count: 3                                #number of control plane nodes
+      class: best-effort-small                #vm class for control plane nodes
+      storageClass: k8s-policy                #storage policy for control plane
+    workers:
+      count: 3                                #number of worker nodes
+      class: best-effort-small                #vm class for workernodes
+      storageClass: k8s-policy                #storage policy for worker nodes
+  settings:
+    network:                                  
+      cni:                  
+        name: antrea                          #use antrea CNI                   
+      pods:
+       cidrBlocks:
+        - 193.0.1.0/16                        #Must not overlap with SVC     
+      services:
+       cidrBlocks:
+       - 195.51.100.0/12                      #Must not overlap with SVC
