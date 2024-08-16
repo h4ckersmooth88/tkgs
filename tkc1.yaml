@@ -1,0 +1,27 @@
+apiVersion: run.tanzu.vmware.com/v1alpha1
+kind: TanzuKubernetesCluster
+metadata:
+  name:
+  namespace:
+spec:
+  distribution:
+    version: v1.21.6
+  settings:
+    network:
+      cni:
+        name: antrea
+      pods:
+        cidrBlocks:
+        - 193.0.2.0/16
+      services:
+        cidrBlocks:
+        - 195.51.100.0/12
+  topology:
+    controlPlane:
+      class: best-effort-small
+      count: 3
+      storageClass:
+    workers:
+      class: best-effort-medium
+      count: 3
+      storageClass:
